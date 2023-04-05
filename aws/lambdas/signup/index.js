@@ -2,10 +2,10 @@ import fetch from 'node-fetch'
 
 export const handler = async (event) => {
     
-let client_id = process.env.client_id
-let client_secret = process.env.client_secret
-let audience = process.env.audience
-let auth0_urlToken = process.env.auth0_urltoken
+const client_id = process.env.client_id
+const client_secret = process.env.client_secret
+const audience = process.env.audience
+const  auth0_urlToken = process.env.auth0_urltoken
 
     const options = {
         method: 'POST',
@@ -17,7 +17,7 @@ let auth0_urlToken = process.env.auth0_urltoken
 
     const response = {
         statusCode: 200,
-        body: JSON.stringify(await results.json),
+        body: JSON.stringify(await results.json()),
     };
     return response;
 };
