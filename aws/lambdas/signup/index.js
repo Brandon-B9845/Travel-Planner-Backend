@@ -1,12 +1,12 @@
 import fetch from 'node-fetch'
 
 export const handler = async (event) => {
-    // TODO implement
+
     var options = {
         method: 'POST',
 
         headers: { 'content-type': 'application/json' },
-        body: `{"client_id":"${process.env.client_id}","client_secret":"${process.env.client_secret}","audience":"${process.env.audience}' }`
+        body: `{"client_id":${process.env.client_id},"client_secret":${process.env.client_secret},"audience":${process.env.audience} }`
     };
 
     const results = await fetch(process.env.auth0_urltoken, options)
