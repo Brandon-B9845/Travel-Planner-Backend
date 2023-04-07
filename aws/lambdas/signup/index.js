@@ -1,4 +1,6 @@
 import fetch from 'node-fetch'
+import { scryptSync, randomBytes, timingSafeEqual } from 'crypto'
+
 
 export const handler = async (event) => {
     
@@ -14,6 +16,23 @@ const  auth0_urlToken = process.env.auth0_urltoken
     };
 
     const results = await fetch(auth0_urlToken, options)
+
+    function hash(input){
+    
+        return createHash('sha256').update(input).digest('hex')
+    }
+
+    function signUp(email,password){
+        const password = hash(password)
+
+        const salt = randomBytes(16).toString('hex')
+    
+        const hashedPassword = scryptSync(password, salt, 64);
+    
+        const user = {email, password: `${salt}:${hashedPassword}`}
+        users.push(user)
+        return user
+    }
 
     const response = {
         statusCode: 200,
