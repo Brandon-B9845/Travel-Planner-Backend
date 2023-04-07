@@ -6,7 +6,9 @@ describe("Tests password check", () => {
     test("tests that the function returns false when given 2 different passwords", () => {
         const fakePassword = "IAmAPassword"
         const fakeDbPassword = getSafePassword("IAmADifferentPassword")
-        expect(checkPassword(fakeDbPassword, fakePassword)).toEqual(false)
+        
+        const results = checkPassword(fakeDbPassword, fakePassword)
+        expect(results).toEqual(false)
     })
     test("tests that the function returns true when passwords match", () => {
         const fakePassword = "IAmAPassword"

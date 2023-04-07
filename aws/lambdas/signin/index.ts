@@ -1,20 +1,32 @@
-import { scryptSync, randomBytes, createHash, timingSafeEqual } from 'crypto'
-import { hash, getSafePassword } from '../signup'
+import { scryptSync, timingSafeEqual } from 'crypto'
+import { hash } from '../signup'
 
 export function checkPassword(savedPassword ,password){
-    const [salt, key] = savedPassword.split(':') 
-    const length: number =key.length
-    const hashedPass = hash(password)
-    const hashedBuffer = scryptSync(hashedPass, salt, 64)
-    console.log(hashedBuffer)
-    console.log(hashedBuffer.length)
-    console.log(key.length)
+    // Get salt and key from original password
+    const [salt, key] = savedPassword.split(' : ') 
     const keyBuffer =  Buffer.from(key)
-    console.log(keyBuffer)
-    console.log(keyBuffer.length)
-    const match = timingSafeEqual(hashedBuffer, keyBuffer) 
 
-    // let match = false
+    // Hash input password
+    const hashedPass = hash(password)
+
+    // Get buffer the same way we did with original password
+    const hashedBuffer = scryptSync(hashedPass, salt, 64)
+
+    // We stringify and then split the buffer the same way we did as above
+    const stringifiedBuffer= `${hashedBuffer}`;
+
+    const testBuffer = Buffer.from(stringifiedBuffer)
+
+    try {
+        const match = timingSafeEqual(testBuffer, keyBuffer) 
+        console.log('Successfully compared the buffers. Results are: ', match)
+        if (match) return true
+    } catch (e) {
+        console.log('Error testing buffers...', e)
+        return false
+    }
+
+    let match = false
     if (match){
         return true
     } else return false
