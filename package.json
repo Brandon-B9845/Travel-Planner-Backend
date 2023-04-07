@@ -3,7 +3,7 @@
   "scripts": {
     "test": "jest",
     "prebuild": "rm -rf dist",
-    "build": "./node_modules/.bin/esbuild app.jsx --bundle --minify --sourcemap --platform=node --target=es2020 --outfile=out.js",
+    "build": ".\\node_modules\\.bin\\esbuild Users.ts --bundle --minify --sourcemap --platform=node --target=es2020 --outfile=./dist/Users.js",
     "postbuild": "cd dist && zip -r index.zip index.js*"
   },
   "devDependencies": {
