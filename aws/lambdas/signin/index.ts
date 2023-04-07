@@ -9,7 +9,7 @@ export function checkPassword(savedPassword ,password){
     console.log(hashedBuffer)
     console.log(hashedBuffer.length)
     console.log(key.length)
-    const keyBuffer =  Buffer.from(key, 'hex')
+    const keyBuffer =  Buffer.from(key)
     console.log(keyBuffer)
     console.log(keyBuffer.length)
     const match = timingSafeEqual(hashedBuffer, keyBuffer) 
