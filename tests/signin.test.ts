@@ -1,6 +1,6 @@
 import {describe, expect, test} from '@jest/globals';
-import { checkPassword }  from '../aws/lambdas/signin'
-import { getSafePassword } from '../aws/lambdas/signup'
+import { checkPassword }  from '../lambdas/signin'
+import { getSafePassword } from '../lambdas/signup'
 
 describe("Tests password check", () => {
     test("tests that the function returns false when given 2 different passwords", () => {

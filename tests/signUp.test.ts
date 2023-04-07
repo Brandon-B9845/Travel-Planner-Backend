@@ -1,4 +1,4 @@
-import { getSafePassword, hash } from "../aws/lambdas/signup";
+import { getSafePassword, hash } from "../lambdas/signup";
 import {describe, expect, test} from '@jest/globals';
 
 describe("Tests hash function", () => {
