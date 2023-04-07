@@ -25,11 +25,8 @@ export function checkPassword(savedPassword ,password){
         console.log('Error testing buffers...', e)
         return false
     }
+    return false
 
-    let match = false
-    if (match){
-        return true
-    } else return false
 }
 
 const handler = async (event) => {
