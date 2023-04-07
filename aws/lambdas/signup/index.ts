@@ -11,8 +11,9 @@ export function getSafePassword(password: string) {
   const salt = randomBytes(16).toString("hex");
 
   const hashedPassword = scryptSync(hashResult, salt, 64);
+  console.log('OG count: ', hashedPassword.length)
 
-  return `${salt}:${hashedPassword}`;
+  return `${salt} : ${hashedPassword}`;
 }
 
 export const handler = async (
