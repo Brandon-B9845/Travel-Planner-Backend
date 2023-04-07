@@ -1,16 +1,20 @@
 import { scryptSync, randomBytes, createHash, timingSafeEqual } from 'crypto'
-
+import { hash, getSafePassword } from '../signup'
 
 export function checkPassword(savedPassword ,password){
     const [salt, key] = savedPassword.split(':') 
-    console.log(key)
     const length: number =key.length
-    const hashedBuffer = scryptSync(password, salt, length)
+    const hashedPass = hash(password)
+    const hashedBuffer = scryptSync(hashedPass, salt, 64)
+    console.log(hashedBuffer)
     console.log(hashedBuffer.length)
-    const keyBuffer = Buffer.from(key, 'hex')
+    console.log(key.length)
+    const keyBuffer =  Buffer.from(key, 'hex')
     console.log(keyBuffer)
+    console.log(keyBuffer.length)
     const match = timingSafeEqual(hashedBuffer, keyBuffer) 
 
+    // let match = false
     if (match){
         return true
     } else return false
