@@ -11,8 +11,6 @@ export const connectSequelize = (database: string, username: string, password: s
 
   const modelsArray = [User]
 
-  console.log('here is stange models array: ')
-  console.log(modelsArray)
 
 
 
@@ -22,10 +20,6 @@ export const connectSequelize = (database: string, username: string, password: s
     host: host,
     models: modelsArray,
     port: 5432,
-    define: {
-        createdAt: 'created_at',
-        updatedAt: 'updated_at',
-    },
     hooks: {
         afterConnect: (client: any, config) => {
             console.log('db connected!')
