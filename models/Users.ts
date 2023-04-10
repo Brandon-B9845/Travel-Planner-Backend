@@ -1,32 +1,37 @@
-import { BOOLEAN, DATE, INTEGER, STRING } from 'sequelize';
-import { Table, Column, Model, PrimaryKey } from 'sequelize-typescript';
+import { BOOLEAN, DATE, INTEGER, STRING, UUID, UUIDV4 } from 'sequelize';
+import { Table, Column, Model, PrimaryKey, CreatedAt, UpdatedAt, AllowNull, Default } from 'sequelize-typescript';
 
 @Table({
     modelName: 'user',
     tableName: 'users'
 })
 export class User extends Model {
-    @PrimaryKey
-    @Column(INTEGER)
-    user_id: number;
-    
 
+    @Default(UUIDV4)
+    @PrimaryKey
+    @Column(UUID)
+    id: number;
+    
     @Column(STRING(50))
     email: string;
 
     @Column(STRING(255))
     password: string;
 
+    @AllowNull(true)
     @Column(BOOLEAN)
-    is_premuim: boolean
+    is_premium?: boolean
 
+    @AllowNull(true)
     @Column(STRING(255))
-    profile_image: string
+    profile_image?: string
 
+    @CreatedAt
     @Column(DATE)
-    createdAt?: Date
+    created_at?: Date
 
+    @UpdatedAt
     @Column(DATE)
-    updatedAt?: Date
+    updated_at?: Date
 
 }
