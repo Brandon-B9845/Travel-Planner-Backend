@@ -1,5 +1,8 @@
 import { scryptSync, randomBytes, createHash } from "crypto";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
+import path, {join} from 'path'
+import { connectSequelize } from "../../lib/connectSequelize";
+import { User } from "../../models/Users";
 
 export function hash(input: string) {
   return createHash("sha256").update(input).digest("hex");
@@ -23,7 +26,23 @@ export const handler = async (
   const client_secret = process.env.client_secret;
   const audience = process.env.audience;
   const auth0_urlToken = process.env.auth0_urltoken;
+  const database = process.env.database
+  const username = process.env.username
+  const password = process.env.password
+  const host = process.env.host
 
+
+  console.log('Aout to do some testing!!!!')
+  const connection = connectSequelize(database, username, password, host)
+
+  await connection.authenticate()
+  await User.create({
+    email: 'test',
+    password: 'test',
+  })
+
+  console.log('Created????')
+  
   const options = {
     method: "POST",
     headers: { "content-type": "application/json" },
