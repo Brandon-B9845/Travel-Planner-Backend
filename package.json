@@ -3,8 +3,8 @@
   "scripts": {
     "test": "jest",
     "prebuild": "rm -rf dist",
-    "build": ".\\node_modules\\.bin\\esbuild Users.ts --bundle --minify --sourcemap --platform=node --target=es2020 --outfile=./dist/Users.js",
-    "postbuild": "cd dist && zip -r index.zip index.js*"
+    "build": "esbuild  lib/connectSequelize.ts models/Users.ts --bundle --external:pg-native --minify --sourcemap --platform=node --target=es2020 --outdir=./dist",
+    "postbuild": "cd dist && zip -r upload.zip lib models"
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",
@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "node-fetch": "^3.3.1",
+    "pg": "^8.10.0",
     "sequelize": "^6.30.0",
     "sequelize-typescript": "^2.1.5"
   }
