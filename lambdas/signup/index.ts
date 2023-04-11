@@ -35,7 +35,7 @@ export const handler = async (
   const host = process.env.host
 
   const data = JSON.parse(event.body)
-  let response
+  let response = "ahhhhhhh"
 
   const connection = connectSequelize(database, username, password, host)
   const userPassword = getSafePassword(data.password)
