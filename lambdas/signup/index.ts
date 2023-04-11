@@ -52,13 +52,13 @@ export const handler = async (
   let jwt;
   let response;
   try {
-    // const userPassword = getSafePassword(event.password)
+    const userPassword = getSafePassword(event.password)
 
     // Create user
-    // await User.insert({
-    //     email: event.email,
-    //     password: userPassword
-    // })
+    await User.insert({
+        email: event.email,
+        password: userPassword
+    })
 
     // jwt = await fetch(auth0_urlToken as string, options)
     response = {
