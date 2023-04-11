@@ -3,7 +3,6 @@ import { Sequelize, SequelizeOptions } from "sequelize-typescript";
 import * as pg from 'pg';
 import { User } from "../models/Users";
 
-
 const basename = path.basename(__filename);
 
 export const connectSequelize = (database: string, username: string, password: string, host: string) => {

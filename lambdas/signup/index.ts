@@ -14,7 +14,6 @@ export function getSafePassword(password: string) {
   const salt = randomBytes(16).toString("hex");
 
   const hashedPassword = scryptSync(hashResult, salt, 64);
-  console.log('OG count: ', hashedPassword.length)
 
   return `${salt} : ${hashedPassword}`;
 }
@@ -31,14 +30,14 @@ export const handler = async (
   const password = process.env.password
   const host = process.env.host
 
+  const data = JSON.parse(event.body)
 
-  console.log('Aout to do some testing!!!!')
   const connection = connectSequelize(database, username, password, host)
 
-  await connection.authenticate()
+  const userPassword = getSafePassword(data.password)
   await User.create({
-    email: 'test',
-    password: 'test',
+    email: data.email,
+    password: userPassword,
   })
 
   console.log('Created????')
@@ -51,28 +50,28 @@ export const handler = async (
 
   let jwt;
   let response;
-  try {
-    const userPassword = getSafePassword(event.password)
+  // try {
+  //   const userPassword = getSafePassword(event.password)
 
-    // Create user
-    await User.insert({
-        email: event.email,
-        password: userPassword
-    })
+  //   // Create user
+  //   await User.insert({
+  //       email: event.email,
+  //       password: userPassword
+  //   })
 
-    // jwt = await fetch(auth0_urlToken as string, options)
-    response = {
-      statusCode: 200,
-      body: "hey",
-      // body: JSON.stringify(await jwt.json()),
-    };
-  } catch (e) {
-    console.log("Failed to sign up: ", e);
-    response = {
-      statusCode: 200,
-      body: JSON.stringify("Could not sign up"),
-    };
-  }
+  //   // jwt = await fetch(auth0_urlToken as string, options)
+  //   response = {
+  //     statusCode: 200,
+  //     body: "hey",
+  //     // body: JSON.stringify(await jwt.json()),
+  //   };
+  // } catch (e) {
+  //   console.log("Failed to sign up: ", e);
+  //   response = {
+  //     statusCode: 200,
+  //     body: JSON.stringify("Could not sign up"),
+  //   };
+  // }
 
   return response;
 };
