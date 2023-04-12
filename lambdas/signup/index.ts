@@ -35,7 +35,7 @@ export const handler = async (
   const host = process.env.host
 
   const data = JSON.parse(event.body)
-  let response = "ahhhhhhh"
+  let response 
 
   const connection = connectSequelize(database, username, password, host)
   const userPassword = getSafePassword(data.password)
@@ -45,8 +45,13 @@ export const handler = async (
       email: data.email,
       password: userPassword,
     })
+    response = {
+      statusCode: 200,
+      body: 'User made successfully!'
+    } 
     connection.close()
   }
+  
   catch (e) {
     let errorMessage: string;
     if (e.name === 'SequelizeUniqueConstraintError') {
