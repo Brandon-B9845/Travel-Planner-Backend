@@ -1,8 +1,15 @@
 import { scryptSync, randomBytes, createHash } from "crypto"
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda"
-import path, { join } from 'path'
 import { connectSequelize } from "../../lib/connectSequelize"
 import { User } from "../../models/Users"
+
+interface bodyType {
+
+  success?: boolean,
+  error?: string,
+  jwt?: string
+
+}
 
 export function hash(input: string) {
   return createHash("sha256").update(input).digest("hex")
@@ -18,10 +25,6 @@ export function getSafePassword(password: string) {
   return `${salt} : ${hashedPassword}`
 }
 
-const createUser = async () => {
-
-}
-
 export const handler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
@@ -34,8 +37,11 @@ export const handler = async (
   const password = process.env.password
   const host = process.env.host
 
+
   const data = JSON.parse(event.body)
-  let response 
+  let body: bodyType = {
+
+  }
 
   const connection = connectSequelize(database, username, password, host)
   const userPassword = getSafePassword(data.password)
@@ -45,13 +51,10 @@ export const handler = async (
       email: data.email,
       password: userPassword,
     })
-    response = {
-      statusCode: 200,
-      body: 'User made successfully!'
-    } 
+    body.success = true
     connection.close()
   }
-  
+
   catch (e) {
     let errorMessage: string;
     if (e.name === 'SequelizeUniqueConstraintError') {
@@ -60,9 +63,10 @@ export const handler = async (
       errorMessage = 'Failed to create user!'
     }
     connection.close()
+    body.error = errorMessage
     return {
       statusCode: 200,
-      body: errorMessage,
+      body: JSON.stringify(body)
     }
   }
   const options = {
@@ -71,23 +75,20 @@ export const handler = async (
     body: `{"client_id":"${client_id}","client_secret":"${client_secret}","audience":"${audience}" ,"grant_type":"client_credentials"}`,
   }
 
-  let jwt
+  try {
 
-  // try {
+    const auth0Response = await fetch(auth0_urlToken as string, options)
+    const jwt = await auth0Response.json()
+    const sendableJWT = jwt.access_token
+    
+    body.jwt = sendableJWT
+  } catch (e) {
+    console.log("Failed to sign up: ", e)
+    body.error = 'Could not sign up'
+  }
 
-  //   // jwt = await fetch(auth0_urlToken as string, options)
-  //   response = {
-  //     statusCode: 200,
-  //     body: "hey",
-  //     // body: JSON.stringify(await jwt.json()),
-  //   }
-  // } catch (e) {
-  //   console.log("Failed to sign up: ", e)
-  //   response = {
-  //     statusCode: 200,
-  //     body: JSON.stringify("Could not sign up"),
-  //   }
-  // }
-
-  return response
+  return {
+    statusCode: 200,
+    body: JSON.stringify(body)
+  }
 }
