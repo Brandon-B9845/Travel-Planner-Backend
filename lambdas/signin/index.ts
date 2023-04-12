@@ -1,10 +1,14 @@
 import { scryptSync, timingSafeEqual } from 'crypto'
 import { hash } from '../signup'
+import { User } from '../../models/Users'
+import { connectSequelize } from "../../lib/connectSequelize"
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda"
+import { bodyType } from '../../types/types'
 
-export function checkPassword(savedPassword ,password){
+export function checkPassword(savedPassword, password) {
     // Get salt and key from original password
-    const [salt, key] = savedPassword.split(' : ') 
-    const keyBuffer =  Buffer.from(key)
+    const [salt, key] = savedPassword.split(' : ')
+    const keyBuffer = Buffer.from(key)
 
     // Hash input password
     const hashedPass = hash(password)
@@ -13,12 +17,12 @@ export function checkPassword(savedPassword ,password){
     const hashedBuffer = scryptSync(hashedPass, salt, 64)
 
     // We stringify and then split the buffer the same way we did as above
-    const stringifiedBuffer= `${hashedBuffer}`;
+    const stringifiedBuffer = `${hashedBuffer}`;
 
     const testBuffer = Buffer.from(stringifiedBuffer)
 
     try {
-        const match = timingSafeEqual(testBuffer, keyBuffer) 
+        const match = timingSafeEqual(testBuffer, keyBuffer)
         console.log('Successfully compared the buffers. Results are: ', match)
         if (match) return true
     } catch (e) {
@@ -29,11 +33,20 @@ export function checkPassword(savedPassword ,password){
 
 }
 
-const handler = async (event) => {
+export const handler = async (
+    event: APIGatewayProxyEvent
+): Promise<APIGatewayProxyResult> => {
     const client_id = process.env.client_id
-const client_secret = process.env.client_secret
-const audience = process.env.audience
-const  auth0_urlToken = process.env.auth0_urltoken
+    const client_secret = process.env.client_secret
+    const audience = process.env.audience
+    const auth0_urlToken = process.env.auth0_urltoken
+    const database = process.env.database
+    const username = process.env.username
+    const password = process.env.password
+    const host = process.env.host
+
+    const data = JSON.parse(event.body)
+    const connection = connectSequelize(database, username, password, host)
 
     const options = {
         method: 'POST',
@@ -41,30 +54,52 @@ const  auth0_urlToken = process.env.auth0_urltoken
         body: `{"client_id":"${client_id}","client_secret":"${client_secret}","audience":"${audience}" ,"grant_type":"client_credentials"}`
     };
 
-    let jwt
-    let response
+    // let jwt
+
+
+    let body: bodyType = {}
     try {
-        // const user = User.findOne({
-        //     where: {
-        //         email: event.email
-        //     }
-        // })
-        // const passwordsMatch: boolean = checkPassword(user.password)
+        const user = await User.findOne({
+            where: {
+                email: data.email
+            }
+        })
+        const passwordsMatch: boolean = checkPassword(user.password, data.password)
+
+    
 
         // jwt = await fetch(auth0_urlToken as string, options)
-        response = {
-            statusCode: 200,
-            body: JSON.stringify(await jwt.json()),
-        };
-    } catch (e){
-        console.log('Failed to log in.', e)
-        response = {
-            statusCode: 200,
-            body: JSON.stringify('Could not log in'),
-        };
+        if (passwordsMatch) {
+            body.success = true
+        } else {
+            body.success = false
+            body.error = 'Passwords did not match'
+        }
+        connection.close()
     }
-    
+    catch (e) {
+        console.log('Failed to log in.', e)
+        body.success = false
+        body.error = 'Unknown error occured... Try again'
+        connection.close()
+    }
 
+    try {
+
+        const auth0Response = await fetch(auth0_urlToken as string, options)
+        const jwt = await auth0Response.json()
+        const sendableJWT = jwt.access_token
     
-    return response;
+        body.jwt = sendableJWT
+      } catch (e) {
+        console.log("Failed to sign up: ", e)
+        body.error = 'Could not sign up'
+      }
+
+
+
+    return {
+        statusCode: 200,
+        body: JSON.stringify(body)
+    }
 }
