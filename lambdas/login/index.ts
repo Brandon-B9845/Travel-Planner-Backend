@@ -54,8 +54,6 @@ export const handler = async (
         body: `{"client_id":"${client_id}","client_secret":"${client_secret}","audience":"${audience}" ,"grant_type":"client_credentials"}`
     };
 
-    // let jwt
-
 
     let body: bodyType = {}
     try {
@@ -66,9 +64,6 @@ export const handler = async (
         })
         const passwordsMatch: boolean = checkPassword(user.password, data.password)
 
-    
-
-        // jwt = await fetch(auth0_urlToken as string, options)
         if (passwordsMatch) {
             body.success = true
         } else {

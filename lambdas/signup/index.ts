@@ -2,14 +2,7 @@ import { scryptSync, randomBytes, createHash } from "crypto"
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda"
 import { connectSequelize } from "../../lib/connectSequelize"
 import { User } from "../../models/Users"
-
-interface bodyType {
-
-  success?: boolean,
-  error?: string,
-  jwt?: string
-
-}
+import { bodyType } from "../../types/types"
 
 export function hash(input: string) {
   return createHash("sha256").update(input).digest("hex")
@@ -37,11 +30,8 @@ export const handler = async (
   const password = process.env.password
   const host = process.env.host
 
-
   const data = JSON.parse(event.body)
-  let body: bodyType = {
-
-  }
+  let body: bodyType = {}
 
   const connection = connectSequelize(database, username, password, host)
   const userPassword = getSafePassword(data.password)
@@ -80,7 +70,7 @@ export const handler = async (
     const auth0Response = await fetch(auth0_urlToken as string, options)
     const jwt = await auth0Response.json()
     const sendableJWT = jwt.access_token
-    
+
     body.jwt = sendableJWT
   } catch (e) {
     console.log("Failed to sign up: ", e)
