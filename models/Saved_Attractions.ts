@@ -1,5 +1,5 @@
 
-import { BOOLEAN, DATE, INET, INTEGER, JSON, STRING, UUID, UUIDV4 } from 'sequelize';
+import { BOOLEAN, DATE, INTEGER, JSON, STRING, UUID, UUIDV4 } from 'sequelize';
 import { Table, Column, Model, PrimaryKey, CreatedAt, UpdatedAt, AllowNull, Default, ForeignKey } from 'sequelize-typescript';
 import { User } from './Users';
 
