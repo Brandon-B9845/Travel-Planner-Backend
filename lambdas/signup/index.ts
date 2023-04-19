@@ -22,6 +22,10 @@ export const handler = async (
 
   const connection = connectSequelize(database, username, password, host)
 
+  console.log(data)
+  console.log(data.email)
+  console.log(data.id)
+
   try {
     await User.create({
       email: data.email,
@@ -32,6 +36,8 @@ export const handler = async (
   }
 
   catch (e) {
+    console.log('FAILED TO CREATE USER...')
+    console.log(e)
     let errorMessage: string;
     if (e.name === 'SequelizeUniqueConstraintError') {
       errorMessage = 'User already exists!'
@@ -45,7 +51,7 @@ export const handler = async (
       body: JSON.stringify(body)
     }
   }
-  
+
   return {
     statusCode: 200,
     body: JSON.stringify(body)

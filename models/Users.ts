@@ -7,9 +7,6 @@ import { Table, Column, Model, PrimaryKey, CreatedAt, UpdatedAt, AllowNull, Defa
 })
 export class User extends Model {
     
-    @PrimaryKey
-    @Column(UUID)
-    id: string
     
     @Column(STRING(50))
     email: string;
