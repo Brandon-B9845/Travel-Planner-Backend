@@ -22,14 +22,10 @@ export const handler = async (
 
   const connection = connectSequelize(database, username, password, host)
 
-  console.log(data)
-  console.log(data.email)
-  console.log(data.id)
 
   try {
     await User.create({
       email: data.email,
-      id: data.id
     })
     body.success = true
     connection.close()

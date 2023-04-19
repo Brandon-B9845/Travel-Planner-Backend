@@ -39,7 +39,6 @@ export class Saved_Attractions extends Model {
     review_count: number
 
     @ForeignKey(()=> User )
-    @PrimaryKey
     @Column(STRING)
     email: string 
 

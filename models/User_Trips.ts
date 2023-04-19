@@ -29,7 +29,6 @@ export class User_trips extends Model {
     created_at: Date
 
     @ForeignKey(()=> User )
-    @PrimaryKey
     @Column(STRING)
     email: string 
 
