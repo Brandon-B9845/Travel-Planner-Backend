@@ -4,12 +4,13 @@ const sequelize = require('sequelize')
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('users', {
+      id: {
+        primaryKey: true,
+        type: Sequelize.UUID,
+      },
       email: {
         type: Sequelize.STRING,
-        primaryKey: true
-      },
-      password: {
-        type: Sequelize.STRING
+        allowNull: false
       },
       is_premium: {
         type: Sequelize.BOOLEAN

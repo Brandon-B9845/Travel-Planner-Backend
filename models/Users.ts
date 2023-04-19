@@ -6,13 +6,13 @@ import { Table, Column, Model, PrimaryKey, CreatedAt, UpdatedAt, AllowNull, Defa
     tableName: 'users'
 })
 export class User extends Model {
-
+    
     @PrimaryKey
+    @Column(UUID)
+    id: string
+    
     @Column(STRING(50))
     email: string;
-
-    @Column(STRING(255))
-    password: string;
 
     @AllowNull(true)
     @Column(BOOLEAN)
