@@ -1,5 +1,4 @@
 import { scryptSync, timingSafeEqual } from 'crypto'
-import { hash } from '../signup'
 import { User } from '../../models/Users'
 import { connectSequelize } from "../../lib/connectSequelize"
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda"

@@ -10,6 +10,10 @@ import { User } from './Users';
 })
 export class Saved_Attractions extends Model {
     
+    @ForeignKey(()=> User )
+    @PrimaryKey
+    @Column(STRING)
+    userId: number 
     
     @Column(STRING(255))
     name: string
@@ -38,9 +42,7 @@ export class Saved_Attractions extends Model {
     @Column(INTEGER)
     review_count: number
 
-    @ForeignKey(()=> User )
-    @Column(STRING)
-    email: string 
+
 
 }
 

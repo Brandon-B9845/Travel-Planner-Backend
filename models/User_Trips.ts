@@ -16,6 +16,11 @@ import { User } from './Users';
 })
 export class User_trips extends Model {
     
+    @ForeignKey(()=> User )
+    @PrimaryKey
+    @Column(STRING)
+    userId: number 
+    
     @Column(STRING(255))
     name: string
 
@@ -27,9 +32,6 @@ export class User_trips extends Model {
 
     @Column(DATE)
     created_at: Date
-
-    @ForeignKey(()=> User )
-    @Column(STRING)
-    email: string 
+    
 
 }
