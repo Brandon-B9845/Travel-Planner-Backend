@@ -4,15 +4,11 @@ const sequelize = require('sequelize')
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('users', {
-      id: {
+      user_id: {
         allowNull: false,
-        autoIncrement: true,
+        foreignKey: true,
         primaryKey: true,
         type: Sequelize.INTEGER
-      },
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false
       },
       is_premium: {
         type: Sequelize.BOOLEAN

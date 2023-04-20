@@ -28,7 +28,7 @@ export const handler = async (
         longitude: data.longitude,
         attractions_type: data.attraction_type,
         review_count: data.review_count,
-        userId: data.userId
+        user_id: data.userId
         })
     }
 }

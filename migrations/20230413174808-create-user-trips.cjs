@@ -3,14 +3,10 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('user_trips', {
-      id: {
+      user_id: {
         allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
-      email: {
         foreignKey: true,
+        primaryKey: true,
         type: Sequelize.INTEGER
       },
       name: {
@@ -25,11 +21,7 @@ module.exports = {
       created_at: {
         type: Sequelize.DATE
       },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE
       }
