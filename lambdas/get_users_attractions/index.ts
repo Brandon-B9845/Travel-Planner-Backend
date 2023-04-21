@@ -29,21 +29,19 @@ export const handler = async (
         raw: true
     })
     connection.close()
-    console.log(record)
-    // try {
-    //     return {
-    //         statusCode: 200,
-    //         body: JSON.stringify(record)
-    //     }
-    //  connection.close()
-    // }
-    // catch (e){
-    //     console.log('FAILED TO GRAB USER ATTRACTIONS')
-    //     console.log(e)
-    //     connection.close()
-    // }
-    return {
-        statusCode: 200,
-        body: JSON.stringify('Failed')
+
+    try {
+        return {
+            statusCode: 200,
+            body: JSON.stringify(record)
+        }
+    }
+    catch (e){
+        console.log('FAILED TO GRAB USER ATTRACTIONS')
+        console.log(e)
+        return {
+            statusCode: 200,
+            body: JSON.stringify('Failed')
+        }
     }
 }
