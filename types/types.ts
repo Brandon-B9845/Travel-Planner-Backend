@@ -1,5 +1,4 @@
 export interface bodyType {
-    success?: boolean,
+    id?: number,
     error?: string,
-    jwt?: string
 }
