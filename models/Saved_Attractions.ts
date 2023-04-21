@@ -1,6 +1,6 @@
 
-import { BOOLEAN, DATE, INTEGER, JSON, STRING, UUID, UUIDV4 } from 'sequelize';
-import { Table, Column, Model, PrimaryKey, CreatedAt, UpdatedAt, AllowNull, Default, ForeignKey } from 'sequelize-typescript';
+import { BOOLEAN, DATE, DECIMAL, INTEGER, JSON, STRING, UUID, UUIDV4 } from 'sequelize';
+import { Table, Column, Model, PrimaryKey, CreatedAt, UpdatedAt, AllowNull, Default, ForeignKey, AutoIncrement } from 'sequelize-typescript';
 import { User } from './Users';
 
 
@@ -9,9 +9,13 @@ import { User } from './Users';
     tableName: 'saved_attractions'
 })
 export class Saved_Attraction extends Model {
-    
-    @ForeignKey(()=> User )
+
     @PrimaryKey
+    @AutoIncrement
+    @Column(INTEGER)
+    id: number
+
+    @ForeignKey(()=> User )
     @Column(STRING)
     user_id: number 
     
@@ -20,8 +24,8 @@ export class Saved_Attraction extends Model {
 
     @Column(STRING(255))
     address: string
-
-    @Column(INTEGER)
+  
+    @Column(DECIMAL(4,3))
     rating: number
 
     @Column(STRING(255))

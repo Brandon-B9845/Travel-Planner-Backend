@@ -9,6 +9,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      user_id: {
+        type: Sequelize.INTEGER
+      },
       name: {
         type: Sequelize.STRING
       },
@@ -16,7 +19,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       rating: {
-        type: Sequelize.INTEGER
+        type: Sequelize.DECIMAL(4, 3),
       },
       image_url: {
         type: Sequelize.STRING
@@ -24,7 +27,7 @@ module.exports = {
       description: {
         type: Sequelize.STRING
       },
-      lattitude: {
+      latitude: {
         type: Sequelize.STRING
       },
       longitude: {
@@ -39,11 +42,11 @@ module.exports = {
       email: {
         type: Sequelize.STRING
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE
       }
