@@ -24,10 +24,10 @@ export const handler = async (
 
 
   try {
-    await User.create({
+    const user = await User.create({
       email: data.email,
     })
-    body.success = true
+    body.id = user.dataValues.id
     connection.close()
   }
 

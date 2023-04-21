@@ -31,7 +31,6 @@ export const handler = async (
         attractions_type: data.attraction_type,
         review_count: data.rating_count,
         })
-        body.success = true
         connection.close()
     }
 
