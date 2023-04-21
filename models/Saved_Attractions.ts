@@ -5,15 +5,15 @@ import { User } from './Users';
 
 
 @Table({
-    modelName: 'saved_attractions',
+    modelName: 'saved_attraction',
     tableName: 'saved_attractions'
 })
-export class Saved_Attractions extends Model {
+export class Saved_Attraction extends Model {
     
     @ForeignKey(()=> User )
     @PrimaryKey
     @Column(STRING)
-    userId: number 
+    user_id: number 
     
     @Column(STRING(255))
     name: string
@@ -42,6 +42,13 @@ export class Saved_Attractions extends Model {
     @Column(INTEGER)
     review_count: number
 
+    @CreatedAt
+    @Column(DATE)
+    created_at?: Date
+
+    @UpdatedAt
+    @Column(DATE)
+    updated_at?: Date
 
 
 }

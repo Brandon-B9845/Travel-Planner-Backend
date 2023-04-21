@@ -2,13 +2,14 @@ import path, { join } from "path";
 import { Sequelize, SequelizeOptions } from "sequelize-typescript";
 import * as pg from 'pg';
 import { User } from "../models/Users";
+import { Saved_Attraction } from "../models/Saved_Attractions";
 
 const basename = path.basename(__filename);
 
 export const connectSequelize = (database: string, username: string, password: string, host: string) => {
   const db = {} as any;
 
-  const modelsArray = [User]
+  const modelsArray = [User, Saved_Attraction]
 
 
 
