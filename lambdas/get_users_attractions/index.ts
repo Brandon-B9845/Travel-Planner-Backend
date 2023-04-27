@@ -17,9 +17,8 @@ export const handler = async (
     const data = JSON.parse(event.body)
     const connection = connectSequelize(database, username, password, host)
 
-    console.log(typeof data)
-    console.log(data)
-
+    
+    
     const userId = parseInt(data.userId)
     console.log('id is here: ', userId)
     const record = await Saved_Attraction.findAll({
