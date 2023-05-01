@@ -14,7 +14,7 @@ import { User } from './Users';
     modelName: 'user_trips',
     tableName: 'user_trips'
 })
-export class User_trips extends Model {
+export class User_Trips extends Model {
 
     @PrimaryKey
     @AutoIncrement

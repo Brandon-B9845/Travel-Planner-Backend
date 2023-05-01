@@ -1,7 +1,7 @@
 import { connectSequelize } from "../../lib/connectSequelize";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { bodyType } from "../../types/types";
-import { User_trips} from "../../models/User_Trips";
+import { User_Trips} from "../../models/User_Trips";
 
 export const handler = async (
     event: APIGatewayProxyEvent
@@ -15,15 +15,33 @@ export const handler = async (
     let body: bodyType = {}
     const connection = connectSequelize(database, username, password, host)
 
-    const record = await User_trips.findOne({
+    const record = await User_Trips.findOne({
         where: {
-            name:data.name,
+            trip_name:data.tripName,
             user_id: data.userId
         }
     })
 
     if (!record){
-        
+        try {
+            await User_Trips.create({
+                userId : data.userId,
+                trip_name : data.tripName,
+                image_url : data?.image_url,
+                attractions: data.attractions,
+
+            })
+            connection.close()
+        }
+        catch (e) {
+            console.log('FAILED TO INSERT INTO DATABAE...')
+            console.log(e)
+            body.error = e 
+            return {
+                statusCode: 200,
+                body: JSON.stringify(body)
+            }
+        }
     }
 
 }
