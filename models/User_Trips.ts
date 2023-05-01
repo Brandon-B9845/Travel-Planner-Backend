@@ -1,5 +1,5 @@
 import { BOOLEAN, DATE, INTEGER, JSON, STRING, UUID, UUIDV4 } from 'sequelize';
-import { Table, Column, Model, PrimaryKey, CreatedAt, UpdatedAt, AllowNull, Default, ForeignKey } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, CreatedAt, UpdatedAt, AllowNull, Default, ForeignKey, AutoIncrement } from 'sequelize-typescript';
 import { User } from './Users';
 
 // CREATE TABLE "public"."user_trips" (
@@ -15,6 +15,11 @@ import { User } from './Users';
     tableName: 'user_trips'
 })
 export class User_trips extends Model {
+
+    @PrimaryKey
+    @AutoIncrement
+    @Column(INTEGER)
+    id: number
     
     @ForeignKey(()=> User )
     @PrimaryKey

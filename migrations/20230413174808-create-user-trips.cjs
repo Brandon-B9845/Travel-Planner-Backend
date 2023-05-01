@@ -3,13 +3,19 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('user_trips', {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
+      },
       user_id: {
         allowNull: false,
         foreignKey: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
+      trip_name: {
         type: Sequelize.STRING
       },
       image_url: {
