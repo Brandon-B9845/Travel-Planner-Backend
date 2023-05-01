@@ -27,7 +27,7 @@ export class User_trips extends Model {
     userId: number 
     
     @Column(STRING(255))
-    name: string
+    trip_name: string
 
     @Column(STRING(255))
     image_url?: string
